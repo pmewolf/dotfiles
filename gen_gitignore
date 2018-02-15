@@ -1,0 +1,5 @@
+cat gitignore/Global/Windows.gitignore \
+        gitignore/Swift.gitignore \
+        gitignore/Perl.gitignore \
+        gitignore/Python.gitignore \
+>> .gitignore 
