@@ -7,7 +7,7 @@
 	name = pmewolf
 	email = pmewolf@gmail.com
 [core]
-	autocrlf = true
+	autocrlf = false
 	excludesfile = C:\\Users\\Ares\\Documents\\gitignore_global.txt
 	#excludesfile = ~/.gitignore
 	editor = vim
