@@ -25,20 +25,39 @@
     test -f ~/.profile && . ~/.profile
     test -f ~/.bashrc && . ~/.bashrc
 
+#   OS Detection
+#   ------------------------------------------------------------
+    unameOut="$(uname -s)"
+    case "${unameOut}" in
+        Linux*)     MACHINE=Linux;;
+        Darwin*)    MACHINE=Mac;;
+        CYGWIN*)    MACHINE=Cygwin;;
+        MINGW*)     MACHINE=MinGw;;
+        *)          MACHINE="UNKNOWN:${unameOut}"
+    esac
+    #echo $MACHINE
+
 #   Define Color 
 #   ------------------------------------------------------------
-    DARKGRAY='\e[1;30m'
-    red='\e[0;31m'
-    RED='\e[1;31m'
-    green='\e[0;32m'
-    GREEN='\e[1;32m'
-    yellow='\e[0;33m'
-    YELLOW='\e[1;33m'
-    blue='\e[0;34m'
-    BLUE='\e[1;34m'
-    cyan='\e[0;36m'
-    CYAN='\e[1;36m'
-    NC='\e[0m'              # No Color
+    if [ $MACHINE == 'Mac' ]; then
+        ESC='\033'
+    else
+        ESC='\e'
+    fi
+
+    DARKGRAY=${ESC}'[1;30m'
+    red=${ESC}'[0;31m'
+    RED=${ESC}'[1;31m'
+    green=${ESC}'[0;32m'
+    GREEN=${ESC}'[1;32m'
+    yellow=${ESC}'[0;33m'
+    YELLOW=${ESC}'[1;33m'
+    blue=${ESC}'[0;34m'
+    BLUE=${ESC}'[1;34m'
+    purple=${ESC}'[0;35m'
+    cyan=${ESC}'[0;36m'
+    CYAN=${ESC}'[1;36m'
+    NC=${ESC}'[0m'              # No Color
 
 #   Setting $DISPLAY 
 #   ------------------------------------------------------------
@@ -71,17 +90,6 @@
     
     export DISPLAY
 
-#   OS Detection
-#   ------------------------------------------------------------
-    unameOut="$(uname -s)"
-    case "${unameOut}" in
-        Linux*)     MACHINE=Linux;;
-        Darwin*)    MACHINE=Mac;;
-        CYGWIN*)    MACHINE=Cygwin;;
-        MINGW*)     MACHINE=MinGw;;
-        *)          MACHINE="UNKNOWN:${unameOut}"
-    esac
-
 #   Change Prompt
 #   ------------------------------------------------------------
     if [[ "${DISPLAY%%:0*}" != "" ]]; then  
@@ -90,6 +98,7 @@
         HILIT=${cyan}  # local machine: prompt will be partly cyan
     fi
 
+    #echo $TERM
     fastprompt() {
         unset PROMPT_COMMAND
         case $TERM in
@@ -99,7 +108,8 @@
             linux )
                 PS1="$HILIT[\h]$BLUE\w$NC > " ;;
             *)
-                PS1="[\h] \w > " ;;
+                PS1="$HILIT[\u@\h]$blue\w$NC > " ;;
+                #PS1="[\h] \w > " ;;
         esac
     }
 
@@ -148,10 +158,13 @@
 #   Add color to terminal
 #   from http://osxdaily.com/2012/02/21/add-color-to-the-terminal-in-mac-os-x/
 #   ------------------------------------------------------------
-    if [ ${MACHINE} != 'MAC' ]; then
+    #if [ $MACHINE != 'Mac' ]; then
         export CLICOLOR=1
-        export LSCOLORS=ExFxBxDxCxegedabagacad
-    fi
+        export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+        #export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
+        #export LSCOLORS=GxFxCxDxBxegedabagaced
+        #export LSCOLORS=ExFxBxDxCxegedabagacad
+    #fi
 
 #   System settings
 #   ------------------------------------------------------------
@@ -185,8 +198,8 @@
 #   Greeting, motd etc...
 #   ------------------------------------------------------------
     # Looks best on a terminal with black background.....
-    echo -e "${CYAN}This is BASH ${RED}${BASH_VERSION%.*}\
-    ${CYAN} - DISPLAY on ${RED}$DISPLAY${NC}"
+    echo -e "${cyan}This is BASH ${red}${BASH_VERSION%.*}\
+    ${cyan} - DISPLAY on ${red}$DISPLAY${NC}"
     date
     if [ -x /usr/games/fortune ]; then
         /usr/games/fortune -s     # Makes our day a bit more fun.... :-)
@@ -203,9 +216,13 @@
 
 #   The 'ls' family (this assumes you use a recent GNU ls)
 #   ------------------------------------------------------------
-    #alias ll="ls -l --group-directories-first"
-    alias ll="ls -FGlAhp --group-directories-first"
-    alias ls='ls -hF --color'                   # add colors for filetype recognition
+    if [ ${MACHINE} != 'Mac' ]; then
+        alias ls='ls -hF --color'               # add colors for filetype recognition
+        alias ll="ls -l --group-directories-first"
+    else
+        alias ls='ls -G'                        # add colors for filetype recognition
+        alias ll="ls -FGlAhp"
+    fi
     alias la='ls -Al'                           # show hidden files
     alias lx='ls -lXB'                          # sort by extension
     alias lk='ls -lSr'                          # sort by size, biggest last
