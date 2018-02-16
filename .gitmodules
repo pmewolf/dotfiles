@@ -1,6 +1,3 @@
 [submodule "gitignore"]
 	path = gitignore
 	url = https://github.com/pmewolf/gitignore
-[submodule "dotvim"]
-	path = dotvim
-	url = https://github.com/pmewolf/dotvim
