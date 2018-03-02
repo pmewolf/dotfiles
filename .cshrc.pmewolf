@@ -1,0 +1,157 @@
+#===========================================================
+# Setting
+#===========================================================
+#echo "CSHRC_PMEWOLF::Setting General"
+
+set     autocorrect
+set     autoexpand
+set     autolist
+set     addsuffix #cp from wh
+set     color
+set     filec
+set     nobeep
+set     history=1500
+set     correct=cmd
+#set   autologout=0
+#setenv TMOUT 0
+umask   022
+
+#if ($OS == "Linux") then
+    setenv EDITOR vim
+    setenv PAGER less
+    setenv LPDEST hpprinter
+    #setenv TERM xtermc
+    setenv TERM xterm-256color
+    #setenv VIMVER 7.2.129
+    setenv VIMVER 8.0
+    #setenv VIMVER 7.4.410
+    #eval    `dircolors -b ~/.dircolors`
+#endif
+
+# User Path
+set     path = ($path /usr/local/bin )
+setenv  PATH ~/scr:$PATH
+setenv  PATH ~/bin:$PATH
+##===========================================================
+## Alias
+##===========================================================
+#echo "CSHRC_PMEWOLF::Setting Alias"
+
+## Prompt
+#alias setprompt 'set prompt="`whoami`@`hostname -s` :$cwd $ "' #Custom Prompt settings 
+#alias setprompt 'set prompt="%{\e[32;1m%}%n%{\e[37m%}@%{\e[33m%}%m%{\e[37m%}:%{\e[36m%}[%/]%{\e[37m%}"\$"%{\e[0m%} "'
+#alias setprompt 'set prompt="%{\e[32;1m%}`whoami`%{\e[37m%}@%{\e[33m%}`hostname`%{\e[37m%}:%{\e[36m%}[$cwd]%{\e[37m%}"\$"%{\e[0m%} "'
+#alias setprompt 'set prompt="%{\e[33;1m%}`hostname`%{\e[37m%}:%{\e[36m%}[$cwd]%{\e[37m%}"\$"%{\e[0m%} "'
+alias setprompt 'set prompt="%{\e[33m%}`hostname`%{\e[37m%}:%{\e[36m%}[$cwd]%{\e[37m%}"\$"%{\e[0m%} "'
+#alias setprompt 'set prompt="`hostname`:`echo $cwd`>"'
+alias cd        'chdir \!* && setprompt'
+alias pushd     'pushd \!* && setprompt'
+alias popd      'popd  \!* && setprompt'
+alias pud       'pushd'
+alias pod       'popd'
+setprompt
+## Common command
+alias type	    'cat -i'
+alias dir	    'ls -l'
+alias dirv	    'ls -l *.v'
+
+# Search
+
+#if ($OS == "Linux") then
+#    alias ls    'ls --color=auto -Fh'
+#    alias ll    'ls -al \!*| more'
+#    alias llt   'ls -alt \!*| more'
+#    alias llr	'ls -laR --color \!* |more'
+#else if($MACHINENAME == "sun4u") then
+#    alias   ls      '~/bin/myls --color=auto -F'
+#    endif
+#endif
+
+alias ls        'ls --color=auto -Fh'
+alias ll        'ls -al \!*| more'
+alias llt       'ls -alt \!*| more'
+alias llr       'ls -laR --color \!* |more'
+alias grep      'grep --color'
+alias gp        'grep  -r -n --color=auto'
+alias dirdu     'find ./ -type d -maxdepth 1 -mindepth 1 | xargs du -sH'
+#find -L . -name "*register*"
+alias findname  'find -L . -name '          
+alias h         'history \!* | tail -n 100'
+
+# Dir
+alias md        'mkdir'
+alias rd        'rmdir'
+alias ..        'cd ../'
+alias ..2       'cd ../../' 
+alias ..3       'cd ../../../'
+alias ..4       'cd ../../../../'
+
+# File
+alias cp        'cp -i'
+alias mv        'mv -i'
+alias rm        'rm -i'
+
+# Other
+alias 88 exit
+alias jobs      'jobs -l'
+
+## Application
+# Editor
+
+# Other
+alias read      'evince &'
+#alias xterm     'xterm -bg black -fg white'
+#xrdb -merge ~/.Xresources
+
+# VNC
+alias killvnc   'vncserver -kill :48'
+alias vnc0      'vncserver :48 -depth 24 -geometry 1920x1020 -deferupdate 100 -alwaysshared'
+
+# git/mgit commands
+# a gxx 'git xx \!*'
+# a git    'mgit \!*'
+alias gdiff     'git diff \!*'
+alias gst       'git st \!* | less'
+alias gci       'git ci \!*'
+alias gco       'git co \!*'
+alias gbr       'git br \!*'
+alias gsup      'git sup \!*'
+alias glg       'git lg \!*'
+alias glol      'git lol \!*'
+alias glola     'git lola \!*'
+alias gll       'git ll \!*'
+alias glla      'git lla \!*'
+
+
+# IBM LSF
+alias bk "bkill"
+alias bq "bqueues"
+
+# VERDI
+alias verdi     'verdi -nologo'
+
+
+# XTERM
+#alias xterm     'xterm -bg black -fg white'
+#xrdb -merge ~/.Xresources
+alias xt         "xterm -sb -sl 24000 -fg gray -bg black -title xt -n xt &"
+alias xtt        "xterm -sb -sl 24000 -fg gray -bg black -title \!^ -n \!^ &"
+# TMUX/SCREEN
+#alias tmux      'TERM=xterm-256color tmux'
+alias gt         'bsub -Is -R "type==X86_64" gnome-terminal &' #"bsub gnome-terminal"
+
+alias xsync "xrdb -merge ~/.Xresources"
+alias xx    "xterm -sb -sl 5000 -fg green -bg black -geometry 90x24 -title \!^ -n \!^ &"
+
+##===========================================================
+## Function
+##===========================================================
+#echo "CSHRC_PMEWOLF::Setting Function"
+
+
+#cscope, ctag
+alias btag  'find ./  -name "*.c" -o -name "*.h" -o -name "*.cpp" > cscope.files ; /usr/bin/cscope -Rbq -i cscope.files ; ctags -R --exclude=.svn'
+#vim
+#:cs add cscope.out
+
+alias vtag  'find ./  -name "*.v" -o -name "*.f" -o -name "*.task" > cscope.files ; /usr/bin/cscope -Rbq -i cscope.files ; ctags -R --exclude=.svn '
