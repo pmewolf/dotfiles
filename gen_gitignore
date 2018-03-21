@@ -1,5 +1,11 @@
+#!/bin/sh
+git clone https://github.com/pmewolf/gitignore 
+
 cat gitignore/Global/Windows.gitignore \
         gitignore/Swift.gitignore \
         gitignore/Perl.gitignore \
         gitignore/Python.gitignore \
+        local.gitignore \
 >> .gitignore 
+
+rm ./gitignore/ -rf
