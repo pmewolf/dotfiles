@@ -8,4 +8,4 @@ cat gitignore/Global/Windows.gitignore \
         local.gitignore \
 >> .gitignore 
 
-rm ./gitignore/ -rf
+rm -rf ./gitignore/ 
