@@ -1,0 +1,2 @@
+bkill `bjobs -o jobid | grep -v ^JOBID |grep  $1 | tr '\n' ' '`
+
