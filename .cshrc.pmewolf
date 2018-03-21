@@ -30,7 +30,7 @@ umask   022
 
 # User Path
 set     path = ($path /usr/local/bin )
-setenv  PATH ~/scr:$PATH
+setenv  PATH ~/my_scr:$PATH
 setenv  PATH ~/bin:$PATH
 ##===========================================================
 ## Alias
