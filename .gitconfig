@@ -49,6 +49,8 @@
 	prompt = false
 [difftool "vi"]
 	cmd = "vim -d \"$LOCAL\" \"$REMOTE\" | cat"
+[difftool "gvim"]
+	cmd = "gvim -d \"$LOCAL\" \"$REMOTE\" | cat"
 [difftool "diff"]
 	cmd = "diff	\"$LOCAL\" \"$REMOTE\" | cat"
 [difftool "meld"]
@@ -111,6 +113,7 @@
 	dd = difftool -t diff
 	dm = difftool -t meld
 	dv = difftool -t vi
+	dg = difftool -t gvim
 	dct = difftool --cached
 	dlc = diff --cached HEAD^   # show a diff last commit
 	#############
