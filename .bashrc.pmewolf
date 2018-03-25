@@ -11,7 +11,7 @@
 #       8_Web_Development
 #       9_Reminders_&_Notes
 #
-#  Ref: 
+#  Ref:
 #       https://c.camden.rutgers.edu/linux_resources/shell_scripting/html/sample-bashrc.html
 #
 #  ----------------------------------------------------------------------------
@@ -32,9 +32,9 @@
     esac
     #echo $MACHINE
 
-#   Define Color 
+#   Define Color
 #   ------------------------------------------------------------
-    if [ $MACHINE == 'Mac' ]; then
+    if [[ $MACHINE == 'Mac' ]]; then
         ESC='\033'
     else
         ESC='\e'
@@ -54,40 +54,40 @@
     CYAN=${ESC}'[1;36m'
     NC=${ESC}'[0m'              # No Color
 
-#   Setting $DISPLAY 
+#   Setting $DISPLAY
 #   ------------------------------------------------------------
     get_xserver() {
         case $TERM in
            xterm )
-                XSERVER=$(who am i | awk '{print $NF}' | tr -d ')''(' ) 
+                XSERVER=$(who am i | awk '{print $NF}' | tr -d ')''(' )
                 # Ane-Pieter Wieringa suggests the following alternative:
                 # I_AM=$(who am i)
                 # SERVER=${I_AM#*(}
                 # SERVER=${SERVER%*)}
-    
+
                 XSERVER=${XSERVER%%:*}
                 ;;
             aterm | rxvt)
             # Find some code that works here. ...
                 ;;
-        esac  
+        esac
     }
-    
+
     if [ -z ${DISPLAY:=""} ]; then
         get_xserver
         if [[ -z ${XSERVER}  || ${XSERVER} == $(hostname) || \
-          ${XSERVER} == "unix" ]]; then 
+          ${XSERVER} == "unix" ]]; then
             DISPLAY=":0.0"          # Display on local host.
         else
             DISPLAY=${XSERVER}:0.0  # Display on remote host.
         fi
     fi
-    
+
     export DISPLAY
 
 #   Change Prompt
 #   ------------------------------------------------------------
-    if [[ "${DISPLAY%%:0*}" != "" ]]; then  
+    if [[ "${DISPLAY%%:0*}" != "" ]]; then
         HILIT=${red}   # remote machine: prompt will be partly red
     else
         HILIT=${cyan}  # local machine: prompt will be partly cyan
@@ -96,16 +96,18 @@
     #echo $TERM
     fastprompt() {
         unset PROMPT_COMMAND
-        case $TERM in
-            *term | rxvt )
-                #PS1="$HILIT[\h]$NC\W > \[\033]0;\${TERM} [\u@\h] \w\007\]" ;;
-                PS1="$HILIT[\u@\h]$BLUE\w$NC > " ;;
-            linux )
-                PS1="$HILIT[\h]$BLUE\w$NC > " ;;
-            *)
-                PS1="$HILIT[\u@\h]$blue\w$NC > " ;;
-                #PS1="[\h] \w > " ;;
-        esac
+        if [ -z !$ZSH_NAME ]; then
+            case $TERM in
+                *term | rxvt )
+                    #PS1="$HILIT[\h]$NC\W > \[\033]0;\${TERM} [\u@\h] \w\007\]" ;;
+                    PS1="$HILIT[\u@\h]$BLUE\w$NC > " ;;
+                linux )
+                    PS1="$HILIT[\h]$BLUE\w$NC > " ;;
+                *)
+                    PS1="$HILIT[\u@\h]$blue\w$NC > " ;;
+                    #PS1="[\h] \w > " ;;
+            esac
+        fi
     }
 
     _powerprompt() {
@@ -134,7 +136,7 @@
     #export PS1="________________________________________________________________________________\n| \w @ \h (\u) \n| => "
     #export PS2="| => "
     fastprompt
-    #powerprompt         
+    #powerprompt
 
 #   Set Paths
 #   ------------------------------------------------------------
@@ -170,20 +172,24 @@
     set -o ignoreeof
     #set -o nounset
     #set -o xtrace          # Useful for debuging.
-    
-    # Enable options:
-    shopt -s cdspell
-    shopt -s cdable_vars
-    shopt -s checkhash
-    shopt -s checkwinsize
-    shopt -s sourcepath
-    shopt -s no_empty_cmd_completion
-    shopt -s cmdhist
-    shopt -s histappend histreedit histverify
-    shopt -s extglob        # Necessary for programmable completion.
-    
-    # Disable options:
-    shopt -u mailwarn
+
+
+    if [ -z !$ZSH_NAME ]; then
+        # Enable options:
+        shopt -s cdspell
+        shopt -s cdable_vars
+        shopt -s checkhash
+        shopt -s checkwinsize
+        shopt -s sourcepath
+        shopt -s no_empty_cmd_completion
+        shopt -s cmdhist
+        shopt -s histappend histreedit histverify
+        shopt -s extglob        # Necessary for programmable completion.
+        
+        # Disable options:
+        shopt -u mailwarn
+    fi
+
     unset MAILCHECK         # Don't want my shell to warn me of incoming mail.
     
     export TIMEFORMAT=$'\nreal %3R\tuser %3U\tsys %3S\tpcpu %P\n'
@@ -362,7 +368,7 @@ Usage: fstr [-i] \"pattern\" [\"filename pattern\"] "
             return;
         fi
         find . -type f -name "${2:-*}" -print0 | \
-        xargs -0 egrep --color=always -sn ${case} "$1" 2>&- | more 
+        xargs -0 egrep --color=always -sn ${case} "$1" 2>&- | more
     }
 
     cuttail() {         # cut last n lines in file, 10 by default
@@ -389,13 +395,13 @@ Usage: fstr [-i] \"pattern\" [\"filename pattern\"] "
     }
 
     swap() {            # Swap 2 filenames around, if they exist
-        local TMPFILE=tmp.$$ 
+        local TMPFILE=tmp.$$
     
         [ $# -ne 2 ] && echo "swap: 2 arguments needed" && return 1
         [ ! -e $1 ] && echo "swap: $1 does not exist" && return 1
         [ ! -e $2 ] && echo "swap: $2 does not exist" && return 1
     
-        mv "$1" $TMPFILE 
+        mv "$1" $TMPFILE
         mv "$2" "$1"
         mv $TMPFILE "$2"
     }
@@ -459,14 +465,14 @@ Usage: fstr [-i] \"pattern\" [\"filename pattern\"] "
         done
     }
 
-    repeat() {          # Repeat n times command.
+
+    myrepeat() {        # Repeat n times command.
         local i max
         max=$1; shift;
         for ((i=1; i <= max ; i++)); do  # --> C-like syntax
             eval "$@";
         done
     }
-    
     
     ask() {             # See 'killps' for example of use.
         echo -n "$@" '[y/n] ' ; read ans
@@ -479,7 +485,7 @@ Usage: fstr [-i] \"pattern\" [\"filename pattern\"] "
     corename() {        # Get name of app that created a corefile.
         for file ; do
             echo -n $file : ; gdb --core=$file --batch | head -1
-        done 
+        done
     }
 
 #   -----------------------------------
