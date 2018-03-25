@@ -1,11 +1,21 @@
 #!/bin/sh
-git clone https://github.com/pmewolf/gitignore 
+git clone https://github.com/pmewolf/gitignore
 
-cat gitignore/Global/Windows.gitignore \
-        gitignore/Swift.gitignore \
-        gitignore/Perl.gitignore \
-        gitignore/Python.gitignore \
-        local.gitignore \
->> .gitignore 
+rm -rf .gitignore
 
-rm -rf ./gitignore/ 
+echo "\n#+ https://github.com/pmewolf/gitignore/Global/Windows.gitignore" >> .gitignore
+cat gitignore/Global/Windows.gitignore >> .gitignore
+
+echo "\n#+ https://github.com/pmewolf/gitignore/Swift.gitignore" >> .gitignore
+cat gitignore/Swift.gitignore >> .gitignore
+
+echo "\n#+ https://github.com/pmewolf/gitignore/Perl.gitignore" >> .gitignore
+cat gitignore/Perl.gitignore >> .gitignore
+
+echo "\n#+ https://github.com/pmewolf/gitignore/Python.gitignore" >> .gitignore
+cat gitignore/Python.gitignore >> .gitignore
+
+echo "\n#+ local.gitignore" >> .gitignore
+cat local.gitignore >> .gitignore
+
+rm -rf ./gitignore
