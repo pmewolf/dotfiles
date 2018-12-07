@@ -145,7 +145,8 @@
 	lola = log --graph --decorate --oneline --all
 	ls   = log --graph --name-status --all --abbrev-commit
 	lsr  = log --graph --name-status --all --abbrev-commit --date=relative
-	lss  = log --graph --decorate --date=relative --all --pretty=format:\"%C(yellow)%h %C(magenta)[%cd] %Cgreen%cn: %Creset%s\"
+	lss  = log --graph --decorate --branches --date=relative --all --pretty=format:\"%C(yellow)%h %C(magenta)[%cd] %Cgreen%cn: %Creset%s %C(bold blue)%d \"
+	lssa = log --graph --decorate --branches --all --pretty=format:\"%C(yellow)%h %C(magenta)[%cd] %Cgreen%cn: %Creset%s %C(bold blue)%d \"
 	man  = log --stat --author
 	#############
 	lsf = ls-files
