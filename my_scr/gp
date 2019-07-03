@@ -36,4 +36,4 @@ BGW=$'\033[47m'
 #grep  -r -n --color=auto $1 | sed 's/:\(.*\):/ +\1 : /g'
 #grep  -r -n --color=auto $1 | awk '{print $1+$2 $3}'
 #grep -r -n --color=auto $@ | sed 's/:\([0-9]*\):/ +\1 : /g' | grep --color=auto $1
-grep -r -n --color=auto $@ | sed "s|\([_\/\.a-zA-Z0-9]*\):\([0-9]*\):\(.*\)$1\(.*\)|$M\1$C+$G\2 $C:$NONE \3$EMR$1$NONE\4|"
+grep -r -n --color=auto "$@" | sed "s|\([_\/\.a-zA-Z0-9]*\):\([0-9]*\):\(.*\)$1\(.*\)|$M\1$C+$G\2 $C:$NONE \3$EMR$1$NONE\4|"
